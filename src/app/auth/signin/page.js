@@ -99,7 +99,7 @@ const Signin = () => {
                     </div>
 
                     <div className="">
-                        <p className="text-center"> Don't have an account ? <Link href="/auth/signup" className="text-[blue] underline"> Create Account </Link></p>
+                        <p className="text-center"> Dont have an account ? <Link href="/auth/signup" className="text-[blue] underline"> Create Account </Link></p>
                     </div>
                 </div>
             </div>

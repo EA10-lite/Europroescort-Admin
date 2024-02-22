@@ -5,6 +5,7 @@ import Link from "next/link";
 import { verify_account } from "@/services/apis";
 import { useSearchParams } from "next/navigation";
 import { BiLoaderAlt } from "react-icons/bi";
+import Toast from "@/components/Toast";
 
 const VerifyAccount = () => {
     const searchparams = useSearchParams();
@@ -31,7 +32,7 @@ const VerifyAccount = () => {
 
     useEffect(()=>{
         verifyAccount();
-    },[])
+    },[verifyAccount])
 
     return (
         <>
