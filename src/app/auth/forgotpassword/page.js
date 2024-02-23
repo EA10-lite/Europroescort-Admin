@@ -58,6 +58,7 @@ const ForgotPassword = () => {
                                             name="email"
                                             placeholder="Enter your email address"
                                             type="email"
+                                            disabled={loading}
                                         />
 
                                         <div className="mt-[40px]">

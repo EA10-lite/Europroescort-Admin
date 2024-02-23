@@ -16,7 +16,6 @@ const Navbar = () => {
             <div className="container mx-auto px-4 lg:px-8 py-6">
                 <div className="flex items-center justify-between w-full">
                     <div className="flex items-center gap-4 flex-[0.25]">
-                        <div className=""></div>
                         <div className="navbar-logo">
                             <h4> Europroescort </h4>
                         </div>
@@ -82,7 +81,7 @@ const Navbar = () => {
                                 />
                             </div>
                         ) : (
-                            <div className="btn-signup">
+                            <div className="btn-signup ml-8 hidden md:block">
                                 <Link href="/auth/signup" className={` ${ pathname === "/auth/signup" ? "bg-primary" : "border border-primary"} text-white rounded-[133.333px] px-6 py-2 whitespace-nowrap hover:bg-primary transition-all delay-150`}>
                                     <span> Join Europroescort </span>
                                 </Link>

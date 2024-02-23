@@ -69,6 +69,7 @@ const AgencySignup = () => {
                                         name="brand_name"
                                         placeholder="Enter your Brand Name"
                                         type="text"
+                                        disabled={loading}
                                     />
 
                                     <FormField 
@@ -76,6 +77,7 @@ const AgencySignup = () => {
                                         name="email"
                                         placeholder="Enter your email address"
                                         type="email"
+                                        disabled={loading}
                                     />
 
                                     <FormField 
@@ -83,14 +85,16 @@ const AgencySignup = () => {
                                         label="Password"
                                         name="password"
                                         placeholder="Enter your password"
-                                        type={ isVisible ? "password" : "text" }
+                                        type={ isVisible ? "text" : "password" }
                                         handleIconClick={()=> setIsVisible(!isVisible)}
+                                        disabled={loading}
                                     />
                                     
                                     <FormCheckbox 
                                         label="Agree to Terms & Conditions"
                                         name="terms_agreement"
                                         id="terms_agreement"
+                                        disabled={loading}
                                     />
 
                                     <div className="mt-[40px]">

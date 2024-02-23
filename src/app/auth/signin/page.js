@@ -76,6 +76,7 @@ const Signin = () => {
                                         name="email"
                                         placeholder="Enter your email address"
                                         type="email"
+                                        disabled={loading}
                                     />
 
                                     <FormField 
@@ -83,9 +84,14 @@ const Signin = () => {
                                         label="Password"
                                         name="password"
                                         placeholder="Enter your password"
-                                        type={ isVisible ? "password" : "text" }
+                                        type={ isVisible ? "text" : "password" }
                                         handleIconClick={()=> setIsVisible(!isVisible)}
+                                        disabled={loading}
                                     />
+
+                                    <div className="flex justify-end w-full mb-8">
+                                        <Link href="/auth/forgotpassword" className="underline text-[blue]"> Forgot Password</Link>
+                                    </div>
 
                                     <div className="mt-[40px]">
                                         <SubmitButton 

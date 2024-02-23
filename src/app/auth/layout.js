@@ -7,7 +7,9 @@ const AuthLayout = ({ children }) => {
         <>
             <Navbar />
             <main className="content py-[140px] bg-dark">
-                { children }
+                <div className="px-4 lg:px-12">
+                    { children }
+                </div>
             </main>
             <Footer />
         </>

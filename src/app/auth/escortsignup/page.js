@@ -70,6 +70,7 @@ const Signup = () => {
                                         name="model_name"
                                         placeholder="choose your model name"
                                         type="text"
+                                        disabled={loading}
                                     />
 
                                     <FormField 
@@ -77,6 +78,7 @@ const Signup = () => {
                                         name="email"
                                         placeholder="Enter your email address"
                                         type="email"
+                                        disabled={loading}
                                     />
 
                                     <FormField 
@@ -84,14 +86,16 @@ const Signup = () => {
                                         label="Password"
                                         name="password"
                                         placeholder="Enter your password"
-                                        type={ isVisible ? "password" : "text" }
+                                        type={ isVisible ? "text" : "password" }
                                         handleIconClick={()=> setIsVisible(!isVisible)}
+                                        disabled={loading}
                                     />
                                     
                                     <FormCheckbox 
                                         label="Agree to Terms & Conditions"
                                         name="terms_agreement"
                                         id="terms_agreement"
+                                        disabled={loading}
                                     />
 
                                     <div className="mt-[40px]">

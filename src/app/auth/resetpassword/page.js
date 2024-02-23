@@ -78,8 +78,9 @@ const ResetPasswordComponent = () => {
                                         label="Password"
                                         name="password"
                                         placeholder="Enter your password"
-                                        type={ isVisible ? "password" : "text" }
+                                        type={ isVisible ? "text" : "password" }
                                         handleIconClick={()=> setIsVisible(!isVisible)}
+                                        disabled={loading}
                                     />
                                     
                                     <FormField 
@@ -87,8 +88,9 @@ const ResetPasswordComponent = () => {
                                         label="Re-type Password"
                                         name="confirmpassword"
                                         placeholder="Enter your password"
-                                        type={ isVisible2 ? "password" : "text" }
+                                        type={ isVisible2 ? "text" : "password" }
                                         handleIconClick={()=> setIsVisible2(!isVisible2)}
+                                        disabled={loading}
                                     />
 
                                     <div className="mt-[40px]">
