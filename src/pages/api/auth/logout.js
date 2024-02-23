@@ -1,6 +1,6 @@
 import cookie from 'cookie';
 
-export default (req,res)=>{
+const logout = (req,res) =>{
     res.setHeader(
         "Set-Cookie",
         cookie.serialize("token",req.body.token,{
@@ -15,3 +15,5 @@ export default (req,res)=>{
     res.statusCode = 200;
     res.json({ success: true })
 }
+
+export default logout;
