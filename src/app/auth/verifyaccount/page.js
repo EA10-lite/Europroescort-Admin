@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-import { verify_account } from "@/services/apis";
-import { useSearchParams } from "next/navigation";
 import { BiLoaderAlt } from "react-icons/bi";
 import Toast from "@/components/Toast";
+
+import { verify_account } from "@/services/apis";
 
 const VerifyAccount = () => {
     const searchparams = useSearchParams();
@@ -32,7 +33,7 @@ const VerifyAccount = () => {
 
     useEffect(()=>{
         verifyAccount();
-    },[verifyAccount])
+    },[code, email])
 
     return (
         <>
