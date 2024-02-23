@@ -1,18 +1,18 @@
 "use client";
 import { useState, Suspense } from "react";
-import { Formik } from "formik";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Formik } from "formik";
 
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import FormField from "@/components/form/FormField";
-import Toast from "@/components/Toast";
 import { SubmitButton } from "@/components/form/FormButton";
+import Toast from "@/components/Toast";
 
 import { resetpassword_schema } from "@/utils/validation";
-import { useSearchParams } from "next/navigation";
 import { reset_password } from "@/services/apis";
 
-const ResetPassword = () => {
+const ResetPasswordComponent = () => {
     const searchparams = useSearchParams();
     const code = searchparams.get("code");
     const email = searchparams.get("email");
@@ -43,7 +43,7 @@ const ResetPassword = () => {
     }
 
     return (
-        <Suspense>
+        <>
             { error && (
                 <Toast 
                     message={errorMessage}
@@ -107,6 +107,14 @@ const ResetPassword = () => {
                     </div>
                 </div>
             </div>
+        </>
+    )
+}
+
+const ResetPassword = () => {
+    return (
+        <Suspense>
+            <ResetPasswordComponent />
         </Suspense>
     )
 }

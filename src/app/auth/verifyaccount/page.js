@@ -8,7 +8,7 @@ import Toast from "@/components/Toast";
 
 import { verify_account } from "@/services/apis";
 
-const VerifyAccount = () => {
+const VerifyAccountComponent = () => {
     const searchparams = useSearchParams();
     const code = searchparams.get("code");
     const email = searchparams.get("email");
@@ -36,7 +36,7 @@ const VerifyAccount = () => {
     },[code, email])
 
     return (
-        <Suspense>
+        <>
             { error && (
                 <Toast 
                     type="error"
@@ -67,8 +67,17 @@ const VerifyAccount = () => {
                 </div>
 
             </div>
+        </>
+    )
+}
+
+const VerifyAccount = () => {
+    return (
+        <Suspense>
+            <VerifyAccountComponent />
         </Suspense>
     )
 }
+
 
 export default VerifyAccount;
