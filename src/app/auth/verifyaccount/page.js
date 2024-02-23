@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -36,7 +36,7 @@ const VerifyAccount = () => {
     },[code, email])
 
     return (
-        <>
+        <Suspense>
             { error && (
                 <Toast 
                     type="error"
@@ -67,7 +67,7 @@ const VerifyAccount = () => {
                 </div>
 
             </div>
-        </>
+        </Suspense>
     )
 }
 

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Formik } from "formik";
 import Link from "next/link";
 
@@ -43,7 +43,7 @@ const ResetPassword = () => {
     }
 
     return (
-        <>
+        <Suspense>
             { error && (
                 <Toast 
                     message={errorMessage}
@@ -107,7 +107,7 @@ const ResetPassword = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </Suspense>
     )
 }
 
