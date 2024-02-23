@@ -103,7 +103,7 @@ const Signup = () => {
                                         label="Agree to Terms & Conditions"
                                         name="terms_agreement"
                                         id="terms_agreement"
-                                        disabled={loadidng}
+                                        disabled={loading}
                                     />
 
                                     <div className="mt-[20px]">
