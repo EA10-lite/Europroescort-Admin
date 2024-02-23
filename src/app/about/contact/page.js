@@ -5,4 +5,4 @@ const Contact = () => {
     )
 }
 
-export default PContact
+export default Contact
