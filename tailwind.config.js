@@ -18,6 +18,12 @@ module.exports = {
         dark: "#1b1f29",
         black: "#484848",
         white: "#ffffff",
+        successlight: "#ECFDF3",
+        success: "#067647",
+        danger: "#B42318",
+        dangerlight: "#FECDCA",
+        warning: "#B42318",
+        warninglight: "#FEF6EE",
       },
       screens: {
         sm :'576px',
