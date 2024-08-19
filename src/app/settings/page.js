@@ -2,7 +2,7 @@
 const Page = () => {
     return (
         <div className="">
-            <h1> Blacklist </h1>
+            <h1> Settings </h1>
         </div>
     )
 }

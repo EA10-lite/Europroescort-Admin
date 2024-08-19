@@ -10,3 +10,55 @@
     list-style-type: none;
     outline: none;
 }
+
+.pending {
+    color:#818188;
+    background-color: rgba(129,129,136,0.1);
+  }
+  
+  .completed {
+    color:#16c784;
+    background-color: rgba(22,199,132, 0.1);
+    border:1px solid #16c784;
+  } 
+  
+  .cancelled {
+    color:#ff5252;
+    background-color: rgba(255,82,82,0.1);
+  }
+  
+  .restitute {
+    color:dodgerblue;
+    background-color: rgba(30,144,255,0.1);
+    border:1px solid dodgerblue;
+  }
+  
+  .pending, .restitute, .completed, .cancelled {
+    padding:2px 8px;
+    border-radius: 5px;
+    text-transform: capitalize;
+    font-size: 12px;
+  }
+
+.login .form-group label,
+.login .form-group input {
+  color: white;
+}
+
+
+
+table tbody tr:nth-child(odd) {
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #0A0A0A;
+}
+
+aside::-webkit-scrollbar {
+  display: none;
+}
+
+
+textarea {
+  resize: none;
+}

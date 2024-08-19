@@ -44,14 +44,14 @@ const UserContextProvider = ({ children }) => {
                 }
             }
             else {
-                if(pathname !== "/"){
-                    router.push("/");
+                if(pathname !== "/login"){
+                    router.push("/login");
                 }
             }
         } catch (error) {
             setUser(null);
-            if(pathname !== "/"){
-                router.push("/");
+            if(pathname !== "/login"){
+                router.push("/login");
             }
         }
     }

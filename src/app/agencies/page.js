@@ -1,168 +1,130 @@
 "use client";
+import Loading from "@/components/Loading";
+import { getAllAgencies } from "@/services/admin";
 import { useEffect, useState } from "react";
 
-import { FcCancel } from "react-icons/fc";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { MdStar } from "react-icons/md";
+import { BiSearch } from "react-icons/bi";
+import { formatDate } from "@/utils/getDate";
+import Link from "next/link";
+import { FiEye } from "react-icons/fi";
 import Search from "@/components/Search";
-import SuspendModal from "@/components/modals/SuspendModal";
-import { getAllAgencies } from "@/services/admin";
-import { LuLoader2 } from "react-icons/lu";
-
-const Table = ({ data }) => {
-    return (
-        <div className="table w-full">
-            <ul className="table-header w-full flex items-center border-b border-lightblack">
-                <li className="font-[500] text-xs leading-[16px] uppercase py-4 text-start px-4 w-[18%]">
-                    <span> Agency Name </span>
-                </li>
-                <li className="font-[500] text-xs leading-[16px] uppercase py-4 text-start px-4 w-[18%]">
-                    <span> Email </span>
-                </li>
-                <li className="font-[500] text-xs leading-[16px] uppercase py-4 text-start px-4 w-[16%]">
-                    <span> Status </span>
-                </li>
-                <li className="font-[500] text-xs leading-[16px] uppercase py-4 text-start px-4 w-[16%]">
-                    <span> Type </span>
-                </li>
-                <li className="font-[500] text-xs leading-[16px] uppercase py-4 text-start px-4 w-[16%]">
-                    <span> Country </span>
-                </li>
-                <li className="font-[500] text-xs leading-[16px] uppercase py-4 text-start px-4 w-[16%]">
-                    <span> State </span>
-                </li>
-            </ul>
-
-
-            <div className="">
-                { data?.map((agency, index) => (
-                    <ul className="w-full flex items-center" key={index}>
-                        <li className="w-[18%] font-[400] text-sm leading-[22px] py-4 px-4"> 
-                            <span> { agency?.agency_name } </span>
-                        </li>
-                        <li className="w-[18%] font-[400] text-sm leading-[22px] py-4 px-4"> 
-                            <span> { agency?.email } </span>
-                        </li>
-                        <li className="w-[16%] font-[400] text-sm leading-[22px] py-4 px-4"> 
-                            <span> { agency?.status } </span>
-                        </li>
-                        <li className="w-[16%] font-[400] text-sm leading-[22px] py-4 px-4"> 
-                            <span> { agency?.country } </span>
-                        </li>
-                        <li className="w-[16%] font-[400] text-sm leading-[22px] py-4 px-4"> 
-                            <span> { agency?.country } </span>
-                        </li>
-                        <li className="w-[16%] font-[400] text-sm leading-[22px] py-4 px-4"> 
-                            <span> { agency?.state } </span>
-                        </li>
-                    </ul>
-                ))}
-            </div>
-        </div>
-    )
-}
 
 const Page = () => {
-    const [search, setSearch] = useState("");
-    const [tab, setTab] = useState("active");
-    const [tabData, setTabData] = useState();
-
-    const [suspend, setSuspendModal] = useState(false);
-
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState();
-    const getAgenciesProfile = async () => {
+    const getAgencys = async () => {
         try {
-            setLoading(true);
             const response = await getAllAgencies();
             if(response?.data?.success) {
                 setData(response?.data?.result);
             }
         } catch (error) {
-            
+            console.log(error);
         } finally {
             setLoading(false);
         }
     }
 
     useEffect(()=> {
-        getAgenciesProfile();
+        getAgencys();
     },[])
 
-
-    useEffect(()=> {
-        if(data && tab !== "all") {
-            let temp_data = data.filter(item=> item.status === tab);
-            setTabData(temp_data)
-        }
-        if(data && tab === "all") {
-            setTabData(data);
-        }
-    },[tab, data])
+    
+    const [search, setSearch] = useState("");
 
     return (
         <>
-            { suspend && (
-                <SuspendModal 
-                    closeModal={()=> setSuspendModal(false)}
-                    handleSuspend={()=> null}
-                    loading={false}
-                />
-            )}
-            <div className="escorts max-w-[90%] mx-auto">
-                <div className="container mx-auto">
-                    <div className="page-header mb-[40px]">
-                        <h1 className="text-[24px] leading-[29px] mb-3 font-[600]"> Escorts Overview </h1>
-
-                        <Search 
-                            name="escorts"
-                            value={search}
-                            setValue={setSearch}
-                            placeholder="Search for escorts by name, country or state..."
-                        />
+            { loading ? (
+                <Loading />
+            ) : data && <div className="pt-[40px] w-full h-full">
+                <div className="page-header text-white px-6 mb-[40px]">
+                    {/* Title */}
+                    <div className="mb-[24px]">
+                        <h2 className="text-[22px] leading-[28px] font-[500] mb-[12px]"> Agencies @ <a href="https://www.mcescorts.com" className="text-primary"> MCEscorts.com </a> </h2>
+                        <p className="text-[16px] font-[500] leading-[22px]"> Welcome to the comprehensive agencies management section of our website. Here, you can browse through the full list of agencies associated with our platform, view their detailed profiles including bio, portfolio, and performance metrics, and utilize the administrative tools available to update their information, manage their visibility, and ensure their profiles are up-to-date and fully optimized for the best user experience. </p>
                     </div>
 
-                    <div className="page-body">
-                        <div className="body-nav flex items-center justify-end">
-                            <ul className=" border border-lightblack rounded-[8px] flex items-center overflow-hidden">
-                                <li>
-                                    <button className={`border-r border-lightblack px-[16px] py-[6px] min-w-[85px] text-center text-sm font-[500] ${ tab === "active" ? "text-primary bg-lightblack bg-opacity-60" : "opacity-60"}`}
-                                        onClick={()=> setTab("active")}
-                                    >
-                                        <span> Active </span>
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className={`border-r border-lightblack px-[16px] py-[6px] min-w-[85px] text-center text-sm font-[500] ${ tab === "suspended" ? "text-primary bg-lightblack bg-opacity-60" : "opacity-60"}`}
-                                        onClick={()=> setTab("suspended")}
-                                    >
-                                        <span> Suspended </span>
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className={`px-[16px] py-[6px] min-w-[85px] text-center text-sm font-[500] ${ tab === "all" ? "text-primary bg-lightblack bg-opacity-60" : "opacity-60"}`}
-                                        onClick={()=> setTab("all")}
-                                    >
-                                        <span> All </span>
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
+                    {/* Search For Escorts */}
+                    <Search 
+                        placeholder="Search for escorts using model names, country, state...."
+                        value={search}
+                        setValue={setSearch}
+                        name={"search"}
+                    />
 
-                        <div className="body-table mt-[20px] w-full">
-                            <Table 
-                                data={tabData}
-                            />
-
-                            { loading && (
-                                <div className="flex items-center justify-center h-[200px] w-full">
-                                    <LuLoader2 className="animate-spin delay-150s" size={40} />
-                                </div>
-                            )}
+                    {/* Filter - Profile Status, Subscribers, Verified escorts, Approved Profiles */}
+                    <div className="filters mt-[24px]">
+                        <div className="flex items-center justify-between">
+                            <div className="">
+                                <p> Filter type A </p>
+                            </div>
+                            <div className="">
+                                <p> Filter Tye B </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <div className="page-body p-6">
+                    <div className="shadow">
+                        <div className="search flex items-center gap-2 justify-between w-full border border-gray rounded-[4px] px-4 py-2 mb-[24px] hidden">
+                            <BiSearch className="text-[24px] text-grey" />
+                            <input 
+                                type="search" 
+                                className="w-full text-sm font-[500] leading-[19px]"
+                                placeholder="Search for agencys here"
+                            />
+                        </div>
+                        <div className="table w-full relative">
+                            <div className="table-nav">
+
+                            </div>
+
+                            <table className="w-full relative border border-grey">
+                                <thead className="w-full">
+                                    <tr className="w-full py-2 bg-gray text-primary sticky top-0">
+                                        <th className="text-sm text-left py-[12px] px-[6px] font-[600]"> Agency </th>
+                                        <th className="text-sm text-center py-[12px] px-[6px] font-[600]"> Verification </th>
+                                        <th className="text-sm text-center py-[12px] px-[6px] font-[600]"> Profile Status </th>
+                                        <th className="text-sm text-left py-[12px] px-[6px] font-[600]"> Country </th>
+                                        <th className="text-sm text-left py-[12px] px-[6px] font-[600]"> City </th>
+                                        <th className="text-sm text-left py-[12px] px-[6px] font-[600]"> Date Joined </th>
+                                        <th className="text-sm text-center py-[12px] px-[6px] font-[600]"> </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    { data?.map(agency => (
+                                        <tr key={agency?._id} className="py-2 text-white">
+                                            <td className="text-sm text-left py-2 px-2 font-[600]">
+                                                <div className="flex items-center gap-2">
+                                                    <img 
+                                                        src={agency?.banner || agency?.profile_picture} 
+                                                        alt={agency?.agency_name} 
+                                                        className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
+                                                    />
+                                                    <p className="text-sm text-left py-2 px-2 font-[600]"> { agency?.agency_name } </p>
+                                                </div>
+                                            </td>
+                                            <td className="text-sm text-center py-2 px-2 font-[600]"> { agency?.is_verified ? "Yes" : "No"} </td>
+                                            <td className="text-sm text-center py-2 px-2 font-[600]"> { agency?.status } </td>
+                                            <td className="text-sm text-left py-2 px-2 font-[600]"> { agency?.country } </td>
+                                            <td className="text-sm text-left py-2 px-2 font-[600]"> { agency?.state } </td>
+                                            <td className="text-sm text-left py-2 px-2 font-[600]"> { formatDate(agency?.createdAt) } </td>
+                                            <td className="text-sm text-right py-2 px-2 font-[600]">
+                                                <Link href={`/agencies/${agency?.agency_name}/${agency?._id}`} className="flex items-center gap-2 text-white hover:text-primary">
+                                                    <span className="text-xs"> view </span>
+                                                    <FiEye size={18} />
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> }
         </>
     )
 }

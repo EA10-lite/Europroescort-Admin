@@ -7,7 +7,7 @@ const Submit = ({ Icon, title, loading, loadingText = "Submitting", type = "butt
     return (
         <button 
             id="submit-btn"
-            className={`w-full bg-primary text-black text-center text-sm font-[600] py-[12px] px-[24px] rounded-[6px] ${ loading ? "bg-opacity-60" : ""}`}
+            className={`w-full bg-primary text-black text-center text-sm font-[600] py-[12px] px-[24px] rounded-[4px] ${ loading ? "bg-opacity-60" : ""}`}
             type={type}
             disabled={loading}
             onClick={handleSubmit}

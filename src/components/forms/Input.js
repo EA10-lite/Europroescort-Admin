@@ -18,7 +18,7 @@ const Input = ({ name, type="text", iconText, handleIconClick, label, placeholde
 
     return (
         <div className="">
-            <label htmlFor={name} className="text-white text-sm font-[600]"> { label } </label>
+            <label htmlFor={name} className="text-sm font-[600]"> { label } </label>
             <div className="form-input border border-lightblack py-[6px] px-[24px] mt-2 flex items-center justify-between rounded-[6px]" ref={inputRef} onFocus={handleFocus} onBlur={handleBlur}>    
                 <input
                     id={name}

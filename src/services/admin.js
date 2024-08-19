@@ -39,3 +39,7 @@ export const activateAgencyAccount = async (id) => {
 export const approveEscortProfile = async (id) => {
     return api.post(`/admin/approveEscortProfile/${id}`);
 }
+
+export const rejectEscortProfile = async (id, data) => {
+    return api.post(`/admin/rejectEscortProfile/${id}`, data);
+}
