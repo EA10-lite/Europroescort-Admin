@@ -17,8 +17,8 @@ const UserContextProvider = ({ children }) => {
         Cookies.set("europroadmin", JSON.stringify({ 
             id: data?.admin?._id, 
             email: data?.admin?.email 
-        }), { expires: new Date(new Date().getTime() + 30 * 60 * 1000)});
-        Cookies.set("euprtken", data?.admin?.access_token, { expires: new Date(new Date().getTime() + 30 * 60 * 1000)});
+        }), { expires: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000)});
+        Cookies.set("euprtken", data?.admin?.access_token, { expires: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000)});
         
         router.push("/escorts");
     }

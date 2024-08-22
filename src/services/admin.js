@@ -40,6 +40,18 @@ export const approveEscortProfile = async (id) => {
     return api.post(`/admin/approveEscortProfile/${id}`);
 }
 
-export const rejectEscortProfile = async (id, data) => {
-    return api.post(`/admin/rejectEscortProfile/${id}`, data);
+export const updateAdminProfile = async (data) => {
+    return api.put(`/admin/updateAdmin`, data);
+}
+
+export const updateAdminPassword = async (data) => {
+    return api.put(`/admin/updatePassword`, data);
+}
+
+export const getEscortReports = async () => {
+    return api.get(`/reports/escorts`);
+}
+
+export const getEscortReportsById = async (id) => {
+    return api.get(`/reports/escorts/${id}`);
 }

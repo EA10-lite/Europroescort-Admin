@@ -62,3 +62,7 @@ aside::-webkit-scrollbar {
 textarea {
   resize: none;
 }
+
+.settings .form-group input {
+  padding: 8px 12px !important;
+}

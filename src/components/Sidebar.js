@@ -66,7 +66,7 @@ const Sidebar = () => {
                         </Link>
                     </li>
                     <li className={`px-4 py-2 transition-all delay-150ms ${ pathname.includes("/settings") ? "text-primary" : "text-white hover:text-primary   hover:border-r-[2px] border-primary"}`}>
-                        <Link href="/reports" className="flex items-center gap-3 w-full font-[600]">
+                        <Link href="/settings" className="flex items-center gap-3 w-full font-[600]">
                             <MdOutlineSettings className="text-[24px]" />
                             <span className="text-[15px] leading-[22px]"> Settings </span>
                         </Link>
