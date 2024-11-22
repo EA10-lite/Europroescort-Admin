@@ -1,14 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { getEscort } from "@/services/admin";
 import { useParams } from "next/navigation";
 
+import { LuLoader2 } from "react-icons/lu";
+import { HiDotsVertical } from "react-icons/hi";
 import { MdLocationOn } from "react-icons/md";
 import ProfileActionModal from "@/components/modals/ProfileActionModal";
+import SubscriptionModal from "@/components/modals/SubscriptionModal";
 
 import { approveEscortProfile, rejectEscortProfile } from "@/services/admin";
-import toast from "react-hot-toast";
-import { LuLoader2 } from "react-icons/lu";
+
 
 
 const Page = () => {
@@ -42,6 +45,7 @@ const Page = () => {
 
     const [openRejectModal, setOpenRejectModal] = useState(false);
     const [openApproveModal, setOpenApproveModal] = useState(false);
+    const [openSubscriptionModal, setOpenSubscriptionModal] = useState(false);
 
     const [rejecting, setRejecting] = useState(false);
     const handleRejection = async (values) => {
@@ -98,6 +102,13 @@ const Page = () => {
                 />
             )}
 
+            { openSubscriptionModal && (
+                <SubscriptionModal 
+                    closeModal={()=> setOpenSubscriptionModal(false)}
+                    escortId={data?.details?._id}
+                />
+            )}
+
             { loading ? (
                 <div className="flex items-center justify-center min-h-[100vh]">
                     <LuLoader2 className="animate-spin text-[28px] text-white" />
@@ -112,12 +123,29 @@ const Page = () => {
 
                                     <div className="flex items-center gap-3">
                                         <MdLocationOn size={28} className="text-white" />
-                                        <h4 className="text-lg font-[500] mb-2"> { data?.details?.country + data?.details?.state } </h4>
+                                        <h4 className="text-lg font-[500] mb-2"> { data?.details?.country + " " + data?.details?.state } </h4>
                                     </div>
                                     <p className="text-base mb-4 font-[500] max-w-[600px]"> { data?.details?.bio || data?.details?.about } </p>
 
-                                    <p className="text-base mb-4 font-[500]"> <b> status: </b> <span className="pending ml-2"> { data?.details?.status } </span> </p>
-                                    <p className="text-base mb-4 font-[500]"> <b> verification: </b> <span className={` ml-2 ${ data?.is_verified ? "" : "pending"}`}> { data?.details?.is_verified ? "Verified" : "Not Verified "} </span> </p>
+                                    <p className="text-base mb-4 font-[500]"> 
+                                        <b> status: </b> 
+                                        <span className="pending ml-2"> { data?.details?.status } </span> 
+                                    </p>
+
+                                    <p className="text-base mb-4 font-[500]"> 
+                                        <b> verification: </b> 
+                                        <span className={` ml-2 ${ data?.details?.is_verified ? "active" : "pending"}`}> 
+                                            { data?.details?.is_verified ? "Verified" : "Not Verified "} 
+                                        </span> 
+                                    </p>
+
+                                    <p className="text-base mb-4 font-[500]"> 
+                                        <b> subscription: </b> 
+                                        <span className="ml-2 uppercase text-primary"> { data?.details?.subscription_plan } </span> 
+                                        <button className="ml-2 bg-primary border border-lightblack px-[12px] py-[4px] text-sm text-black" onClick={()=> setOpenSubscriptionModal(true)}>
+                                            <span> update </span>
+                                        </button>
+                                    </p>
 
                                     <img src={data?.details?.profile_picture} alt={data?.details?.model_name} className="h-[280px] border border-lightblack mb-4" />
                                 </div>
@@ -131,7 +159,7 @@ const Page = () => {
                                     </button> }
                                     
                                     <button 
-                                        className="text-primary bg-grey w-[145px] py-[8px] rounded-[133.33px] text-base font-[600]"
+                                        className="text-primary border border-lightblack shadow-md bg-grey w-[145px] py-[8px] rounded-[133.33px] text-base font-[600]"
                                         onClick={()=> setOpenRejectModal(true)}
                                     >
                                         <span> Reject </span>

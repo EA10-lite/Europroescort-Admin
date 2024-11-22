@@ -55,3 +55,7 @@ export const getEscortReports = async () => {
 export const getEscortReportsById = async (id) => {
     return api.get(`/reports/escorts/${id}`);
 }
+
+export const subscribeEscort = async (id, data) => {
+    return api.post(`/subscribe/escort/${id}`, data);
+}
