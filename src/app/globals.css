@@ -11,7 +11,12 @@
     outline: none;
 }
 
-.pending {
+.suspended {
+    color:#818188;
+    background-color: rgba(129,129,136,0.1);
+  }
+
+.active {
     color:#818188;
     background-color: rgba(129,129,136,0.1);
   }

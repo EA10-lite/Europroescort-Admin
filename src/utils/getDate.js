@@ -1,6 +1,6 @@
 export function formatDate(inputDate) {
     const date = new Date(inputDate);
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return date.toLocaleDateString('en-GB', options);
 }
 

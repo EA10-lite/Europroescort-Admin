@@ -14,7 +14,7 @@ const ProfileActionModal = ({
     const [openMessageBox, setOpenMessageBox] = useState(false);
 
     return (
-        <div className="modal delete-account">
+        <div className="modal">
             <div className="fixed left-0 top-0 right-0 bottom-0 w-full h-full bg-black bg-opacity-80 z-[99]">
                 <div className="flex items-center justify-center w-full h-full">
                     { !openMessageBox && <div className="modal-content max-w-[370px] p-[40px] bg-gray">

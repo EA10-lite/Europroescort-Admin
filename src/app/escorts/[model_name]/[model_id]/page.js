@@ -129,12 +129,12 @@ const Page = () => {
 
                                     <p className="text-base mb-4 font-[500]"> 
                                         <b> status: </b> 
-                                        <span className="pending ml-2"> { data?.details?.status } </span> 
+                                        <span className={`${data?.details?.status} ml-2`}> { data?.details?.status } </span> 
                                     </p>
 
                                     <p className="text-base mb-4 font-[500]"> 
                                         <b> verification: </b> 
-                                        <span className={` ml-2 ${ data?.details?.is_verified ? "active" : "pending"}`}> 
+                                        <span className={` ml-2 ${ data?.details?.is_verified ? "active" : "suspended"}`}> 
                                             { data?.details?.is_verified ? "Verified" : "Not Verified "} 
                                         </span> 
                                     </p>

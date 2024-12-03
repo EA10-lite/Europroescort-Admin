@@ -1,11 +1,13 @@
 "use client"
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Navbar from "./Navbar";
 import { usePathname } from "next/navigation";
 import "../app/globals.css";
 import Sidebar from "./Sidebar";
+import { UserContext } from "@/context/AdminContext";
 
 const Layout = ({ children }) => {
+    const { user } = useContext(UserContext)
     const pathname = usePathname();
     const isAuthPage = pathname.includes("/login");
 
@@ -13,7 +15,7 @@ const Layout = ({ children }) => {
 
     return (
         <div className="w-full h-full overflow-auto flex bg-black">
-            { open && !isAuthPage && <div className="w-[20%] relative">
+            { open && !isAuthPage && user && <div className="w-[20%] relative">
                 <Sidebar />
             </div> }
 

@@ -59,3 +59,11 @@ export const getEscortReportsById = async (id) => {
 export const subscribeEscort = async (id, data) => {
     return api.post(`/subscribe/escort/${id}`, data);
 }
+
+export const getSubscribedEscorts = async () => {
+    return api.get("/subscribe/getEscortSubscriptions");
+}
+
+export const getDashboard = async () => {
+    return api.get("/admin/dashboard");
+}
