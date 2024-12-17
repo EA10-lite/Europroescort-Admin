@@ -10,13 +10,16 @@ import { FiEye } from "react-icons/fi";
 import Link from "next/link";
 import Search from "@/components/Search";
 import { capitalizeWord } from "@/utils/text-formatting";
+import Pagination from "@/components/Pagination";
 
 
 const Page = () => {
+    const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState();
     const getEscorts = async () => {
         try {
+            setLoading(true);
             const response = await getAllEscorts();
             if(response?.data?.success) {
                 setData(response?.data?.result);
@@ -30,10 +33,7 @@ const Page = () => {
 
     useEffect(()=> {
         getEscorts();
-    },[])
-
-    const [search, setSearch] = useState("");
-
+    },[page])
 
     const [activeFilter, setActiveFilter] = useState("All");
     const [tempData, setTempData] = useState();
@@ -69,11 +69,30 @@ const Page = () => {
 
     }, [activeFilter])
 
+    const [search, setSearch] = useState("");
+    const handleSearch = (e)=> {
+        setSearch(e.target.value);
+    }
+
+    useEffect(()=> {
+        setTempData(data);
+        if(search.length > 0) {
+            setTempData(
+                (temp_data)=> temp_data?.filter(
+                    escort => escort?.model_name?.toLowerCase().includes(search) || 
+                    escort?.country?.toLowerCase().includes(search) || 
+                    escort?.state?.toLowerCase().includes(search)
+                )
+            );
+        }
+        else {
+            setTempData(data);
+        }
+    },[search])
+
     return (
         <>
-            { loading ? (
-                <Loading />
-            ) : data && <div className="py-[40px] w-full h-full">
+            <div className="py-[40px] w-full h-full">
                 <div className="page-header text-white px-6 mb-[20px]">
                     {/* Title */}
                     <div className="mb-[24px]">
@@ -85,7 +104,7 @@ const Page = () => {
                     <Search 
                         placeholder="Search for escorts using model names, country, state...."
                         value={search}
-                        setValue={setSearch}
+                        setValue={handleSearch}
                         name={"search"}
                     />
 
@@ -140,57 +159,73 @@ const Page = () => {
                 </div>
 
                 <div className="page-body px-6 pb-[80px]">
-                    <div className="overflow-hidden">
-                        <div className="table w-full relative overflow-auto">
-                            <table className="w-full relative shadow border border-grey">
-                                <thead className="w-full">
-                                    <tr className="w-full py-2 bg-gray text-primary sticky top-0 px-4">
-                                        <th className="text-sm text-left font-[600] py-[12px] pl-[22px] pr-[6px]"> Escort Details </th>
-                                        <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Verified </th>
-                                        <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Subscribed </th>
-                                        <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Status </th>
-                                        <th className="text-sm text-left font-[600] py-[8px] px-[6px]"> Gender </th>
-                                        <th className="text-sm text-left font-[600] py-[8px] px-[6px]"> Country </th>
-                                        <th className="text-sm text-left font-[600] py-[8px] px-[6px]"> State </th>
-                                        <th className="text-sm text-left font-[600] py-[8px] px-[6px]"> Date </th>
-                                        <th className="text-sm text-center font-[600]"> </th>
-                                    </tr>
-                                </thead>
+                    { loading ? (
+                            <Loading />
+                        ) : data && (
+                            <div className="overflow-hidden">
+                                <div className="table w-full relative overflow-auto">
+                                    <table className="w-full relative shadow border border-grey">
+                                        <thead className="w-full">
+                                            <tr className="w-full py-2 bg-gray text-primary sticky top-0 px-4">
+                                                <th className="text-sm text-left font-[600] py-[12px] pl-[22px] pr-[6px]"> Escort Details </th>
+                                                <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Verified </th>
+                                                <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Subscribed </th>
+                                                <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Status </th>
+                                                <th className="text-sm text-left font-[600] py-[8px] px-[6px]"> Gender </th>
+                                                <th className="text-sm text-left font-[600] py-[8px] px-[6px]"> Country </th>
+                                                <th className="text-sm text-left font-[600] py-[8px] px-[6px]"> State </th>
+                                                <th className="text-sm text-left font-[600] py-[8px] px-[6px]"> Date </th>
+                                                <th className="text-sm text-center font-[600]"> </th>
+                                            </tr>
+                                        </thead>
 
-                                <tbody className="text-white">
-                                    { tempData?.map(escort => (
-                                        <tr key={escort?._id} className="py-2">
-                                            <td className="text-sm text-left py-2 px-2 font-[600] pl-[22px] pr-[6px]">
-                                                <div className="flex items-center gap-2">
-                                                    <img 
-                                                        src={escort?.profile_picture} 
-                                                        alt={escort?.model_name} 
-                                                        className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
-                                                    />
-                                                    <p className="text-sm text-left py-2 px-2 font-[600]"> { escort?.model_name } </p>
-                                                </div>
-                                            </td>
-                                            <td className="text-sm text-center py-2 px-2 font-[600]"> { escort?.is_verified ? "Yes" : "No"} </td>
-                                            <td className="text-sm text-center py-2 px-2 font-[600]"> { escort?.has_subscribed ? "Yes" : "No"} </td>
-                                            <td className="text-sm text-center py-2 px-2 font-[600]"> { capitalizeWord(escort?.status) } </td>
-                                            <td className="text-sm text-left py-2 px-2 font-[600]"> { escort?.gender } </td>
-                                            <td className="text-sm text-left py-2 px-2 font-[600]"> { escort?.country} </td>
-                                            <td className="text-sm text-left py-2 px-2 font-[600]" title={escort?.state}> { escort?.state.slice(0, 15) } </td>
-                                            <td className="text-sm text-left py-2 px-2 font-[600]"> { formatDate(escort?.createdAt) } </td>
-                                            <td className="text-sm text-right py-2 px-2 font-[600]">
-                                                <Link href={`/escorts/${escort?.model_name}/${escort?._id}`} className="flex items-center gap-2 text-white hover:text-primary">
-                                                    <span className="text-xs"> view </span>
-                                                    <FiEye size={18} />
-                                                </Link>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                        <tbody className="text-white">
+                                            { tempData?.slice(0,10)?.map(escort => (
+                                                <tr key={escort?._id} className="py-2">
+                                                    <td className="text-sm text-left py-2 px-2 font-[600] pl-[22px] pr-[6px]">
+                                                        <div className="flex items-center gap-2">
+                                                            <img 
+                                                                src={escort?.profile_picture} 
+                                                                alt={escort?.model_name} 
+                                                                className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
+                                                            />
+                                                            <p className="text-sm text-left py-2 px-2 font-[600]"> { escort?.model_name } </p>
+                                                        </div>
+                                                    </td>
+                                                    <td className="text-sm text-center py-2 px-2 font-[600]"> { escort?.is_verified ? "Yes" : "No"} </td>
+                                                    <td className="text-sm text-center py-2 px-2 font-[600]"> { escort?.has_subscribed ? "Yes" : "No"} </td>
+                                                    <td className="text-sm text-center py-2 px-2 font-[600]"> { capitalizeWord(escort?.status) } </td>
+                                                    <td className="text-sm text-left py-2 px-2 font-[600]"> { escort?.gender } </td>
+                                                    <td className="text-sm text-left py-2 px-2 font-[600]"> { escort?.country} </td>
+                                                    <td className="text-sm text-left py-2 px-2 font-[600]" title={escort?.state}> { escort?.state.slice(0, 15) } </td>
+                                                    <td className="text-sm text-left py-2 px-2 font-[600]"> { formatDate(escort?.createdAt) } </td>
+                                                    <td className="text-sm text-right py-2 px-2 font-[600]">
+                                                        <Link href={`/escorts/${escort?.model_name}/${escort?._id}`} className="flex items-center gap-2 text-white hover:text-primary">
+                                                            <span className="text-xs"> view </span>
+                                                            <FiEye size={18} />
+                                                        </Link>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> 
+                        )
+                    }
+
+                    <div className="">
+                        <Pagination 
+                            setPageIndex={setPage}
+                            currentPageIndex={page}
+                            totalPage={tempData?.length}
+                            pageItems={data}
+                            setCurrentPageItems={setTempData}
+                        />
                     </div>
+
                 </div>
-            </div> }
+            </div>
         </>
     )
 }

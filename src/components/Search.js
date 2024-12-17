@@ -15,7 +15,7 @@ const Search = ({ name, value, setValue, placeholder}) => {
                         type="text"
                         name={name}
                         value={value}
-                        onChange={(e)=> setValue(e.target.value)}
+                        onChange={(e)=> setValue(e)}
                         className="w-full py-3 text-sm font-[500] text-white outline-[none] border-[none] bg-[transparent]"
                         placeholder={placeholder}
                     />

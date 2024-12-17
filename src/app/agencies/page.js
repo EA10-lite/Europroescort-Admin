@@ -31,6 +31,25 @@ const Page = () => {
 
     
     const [search, setSearch] = useState("");
+    const handleSearch = (e)=> {
+        setSearch(e.target.value);
+    }
+
+    useEffect(()=> {
+        setTempData(data);
+        if(search.length > 0) {
+            setTempData(
+                (temp_data)=> temp_data?.filter(
+                    agency => agency?.agency_name?.toLowerCase().includes(search) || 
+                    agency?.country?.toLowerCase().includes(search) || 
+                    agency?.state?.toLowerCase().includes(search)
+                )
+            );
+        }
+        else {
+            setTempData(data);
+        }
+    },[search])
 
     return (
         <>
@@ -48,7 +67,7 @@ const Page = () => {
                     <Search 
                         placeholder="Search for escorts using model names, country, state...."
                         value={search}
-                        setValue={setSearch}
+                        setValue={handleSearch}
                         name={"search"}
                     />
 

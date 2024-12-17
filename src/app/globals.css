@@ -71,3 +71,33 @@ textarea {
 .settings .form-group input {
   padding: 8px 12px !important;
 }
+
+.search-pagination li {
+  float: left;
+}
+
+.search-pagination ul li a {
+  display: block;
+  text-decoration: none;
+  background-color: #151515;
+  color: white;
+  transition: background-color 0.3s ease;
+  padding: 8px 16px;
+  margin-left: 10px;
+  border: 1px solid #252525;
+  border-radius: 4px;
+}
+
+.search-pagination ul li.selected a {
+  background-color: #FF9000;
+  color: #0A0A0A;
+}
+
+.search-pagination ul li.disabled a {
+  pointer-events: none;
+  color: #ccc;
+}
+
+.search-pagination ul li a:hover {
+  background-color: #FF9000;
+}

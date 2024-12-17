@@ -34,7 +34,7 @@ const Select = ({
             >
                 <option> Choose </option>
                 {options?.slice(0, options?.length).map((option, index) => (
-                    <option value={option} key={index}> { option } </option>
+                    <option value={option?.value ? option?.value : option} key={index}> { option?.title ? option?.title : option } </option>
                 ))}
             </select>
             <Error error={errors[name]} visible={touched[name]} />

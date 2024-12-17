@@ -1,4 +1,5 @@
 "use client";
+import Search from "@/components/Search";
 import { getSubscribedEscorts } from "@/services/admin";
 import { formatDate } from "@/utils/getDate";
 import { useEffect, useState } from "react";
@@ -71,6 +72,39 @@ const Page = () => {
         }
     } ,[activeFilter, data])
 
+    const [search, setSearch] = useState("");
+    const handleSearch = (e)=> {
+        setSearch(e.target.value);
+    }
+
+    useEffect(()=> {
+        setTempData(data);
+        if(search.length > 0) {
+            if(accountType === "Escorts") {
+                setTempData(
+                    (temp_data)=> temp_data?.filter(
+                        escort => escort?.model_name?.toLowerCase().includes(search) || 
+                        escort?.country?.toLowerCase().includes(search) || 
+                        escort?.state?.toLowerCase().includes(search)
+                    )
+                );
+            }
+            
+            else {
+                setTempData(
+                    (temp_data)=> temp_data?.filter(
+                        agency => agency?.agency_name?.toLowerCase().includes(search) || 
+                        agency?.country?.toLowerCase().includes(search) || 
+                        agency?.state?.toLowerCase().includes(search)
+                    )
+                );
+            }
+        }
+        else {
+            setTempData(data);
+        }
+    },[search, accountType])
+
 
     return (
         <div className="py-[40px] w-full h-full"> 
@@ -80,6 +114,14 @@ const Page = () => {
                     <h2 className="text-[22px] leading-[28px] font-[500] mb-[12px]"> Subscriptions </h2>
                     <p className="text-[16px] font-[500] leading-[22px]"> Welcome to the comprehensive escorts management section of our website. Here, you can browse through the full list of models who are currently subscribed with our platform, view their detailed profiles including bio, portfolio, and performance metrics, and utilize the administrative tools available to update their information, manage their visibility, and ensure their profiles are up-to-date and fully optimized for the best user experience. </p>
                 </div>
+
+                {/* Search For Escorts */}
+                <Search 
+                    placeholder="Search for escorts or agencies using names, country, state...."
+                    value={search}
+                    setValue={handleSearch}
+                    name={"search"}
+                />
 
                 {/* Filter - Escorts, Agencies, Top, Vip */}
                 <div className="filters mt-[60px]">

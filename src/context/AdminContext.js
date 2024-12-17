@@ -20,7 +20,7 @@ const UserContextProvider = ({ children }) => {
         }), { expires: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000)});
         Cookies.set("euprtken", data?.admin?.access_token, { expires: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000)});
         
-        router.push("/escorts");
+        router.push("/");
     }
 
     const logout = ()=> {

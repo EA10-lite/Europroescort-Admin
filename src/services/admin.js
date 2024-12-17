@@ -64,6 +64,22 @@ export const getSubscribedEscorts = async () => {
     return api.get("/subscribe/getEscortSubscriptions");
 }
 
+export const getVerifiedEscorts = async () => {
+    return api.get("/verification/escortVerifications");
+}
+
+export const getVerifiedAgencies = async () => {
+    return api.get("/verification/agencyVerifications");
+}
+
 export const getDashboard = async () => {
     return api.get("/admin/dashboard");
+}
+
+export const getAllBanners = async () => {
+    return api.get("/banner");
+}
+
+export const addBanner = async (data) => {
+    return api.post("/banner/create", data);
 }
