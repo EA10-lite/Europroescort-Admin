@@ -15,7 +15,7 @@ const prod = {
     output: "standalone",
     reactStrictMode: false,
     trailingSlash: true,
-    env: dev,
+    env: prod,
     images: {
       remotePatterns: [
         {
