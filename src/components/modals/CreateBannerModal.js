@@ -28,7 +28,7 @@ const CreateBannerModal = ({ closeModal }) => {
 
     return (
         <div className="modal delete-account">
-            <div className="fixed left-0 top-0 right-0 bottom-0 w-full h-full bg-black bg-opacity-80">
+            <div className="fixed left-0 top-0 right-0 bottom-0 w-full h-full bg-black bg-opacity-80 z-[99]">
                 <div className="flex items-center justify-center w-full h-full">
                     <div className="modal-content w-full md:w-[420px] h-[80vh] overflow-auto bg-grey border border-lightblack rounded-[8px] text-white">
                         <div className="flex items-center  justify-between bg-primary text-black py-[12px] px-[16px]">
