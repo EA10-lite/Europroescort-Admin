@@ -1,8 +1,11 @@
 "use client";
 import Loading from "@/components/Loading";
 import CreateBannerModal from "@/components/modals/CreateBannerModal";
-import { getAllBanners } from "@/services/admin";
+import ProfileActionModal from "@/components/modals/ProfileActionModal";
+import { deleteBanner, getAllBanners } from "@/services/admin";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { MdDelete, MdLink } from "react-icons/md";
 
 
 const Page = () => {
@@ -22,6 +25,24 @@ const Page = () => {
         }
     }
 
+
+    const [activeBanner, setActiveBanner] = useState(-1)
+    const [deleting, setDeleting] = useState(false);
+    const handleDelete = async (id) => {
+        try {
+            setDeleting(true);
+            const response = await deleteBanner(activeBanner);
+            if(response?.data?.success) {
+                toast.success("Banner successfully deleted!");
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setDeleting(false);
+        }
+    }
+
     useEffect(()=> {
         getBanners();
     },[])
@@ -34,6 +55,16 @@ const Page = () => {
             { open && (
                 <CreateBannerModal 
                     closeModal={()=> setOpen(false)}
+                />
+            )}
+
+            { activeBanner !== -1 && (
+                <ProfileActionModal 
+                    handleAction={handleDelete}
+                    loading={deleting}
+                    closeModal={()=> setActiveBanner(-1)}
+                    title="Are you sure you want to delete this banner!"
+
                 />
             )}
             <div className="py-[40px] w-full h-full">
@@ -53,9 +84,17 @@ const Page = () => {
                         ) : data && (
                             <div className="flex items-center gap-4 flex-wrap">
                                 { data?.length > 0 ? data?.map((banner, index)=> (
-                                    <a href={banner?.link} key={index} target="_blank" className="bg-grey border border-lightblack">
+                                    <div key={index} target="_blank" className={`w-[187px] h-[243px] bg-grey border block relative ${
+                                        activeBanner === banner._id ? "border-primary" : "border-lightblack"
+                                    }`}>
+                                        <div className="bg-primary w-[36px] h-[36px] rounded-full flex items-center justify-center absolute top-[16px] right-[16px] z-[9]">
+                                            <MdDelete onClick={()=> setActiveBanner(banner._id)} className="text-black text-[18px]" />
+                                        </div>
+                                        <a href={banner?.link} target="_blank" className="bg-grey w-[36px] h-[36px] rounded-full flex items-center justify-center absolute top-[16px] left-[16px] z-[9]">
+                                            <MdLink className="text-white text-[18px]" />
+                                        </a>
                                         <img src={banner?.picture} alt={banner?.name} className="w-[187px] h-[243px] object-cover" />
-                                    </a>
+                                    </div>
                                 )) : (
                                     <p className="bg-grey border border-lightblack py-[12px] px-[16px] w-full text-white text-center"> No Banner added yet </p>
                                 )} 

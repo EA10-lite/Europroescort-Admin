@@ -34,6 +34,11 @@ const Page = () => {
     const handleSearch = (e)=> {
         setSearch(e.target.value);
     }
+    
+    const [tempData, setTempData] = useState();
+    useEffect(()=> {
+        setTempData(data);
+    }, [data])
 
     useEffect(()=> {
         setTempData(data);
@@ -72,7 +77,7 @@ const Page = () => {
                     />
 
                     {/* Filter - Profile Status, Subscribers, Verified escorts, Approved Profiles */}
-                    <div className="filters mt-[24px]">
+                    <div className="filters mt-[24px] hidden">
                         <div className="flex items-center justify-between">
                             <div className="">
                                 <p> Filter type A </p>
@@ -113,7 +118,7 @@ const Page = () => {
                                 </thead>
 
                                 <tbody>
-                                    { data?.map(agency => (
+                                    { tempData?.map(agency => (
                                         <tr key={agency?._id} className="py-2 text-white">
                                             <td className="text-sm text-left py-2 px-2 font-[600]">
                                                 <div className="flex items-center gap-2">

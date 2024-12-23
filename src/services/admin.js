@@ -83,3 +83,7 @@ export const getAllBanners = async () => {
 export const addBanner = async (data) => {
     return api.post("/banner/create", data);
 }
+
+export const deleteBanner = async (id) => {
+    return api.delete("/banner/"+id);
+}

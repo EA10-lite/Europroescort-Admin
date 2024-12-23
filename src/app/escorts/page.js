@@ -11,12 +11,14 @@ import Link from "next/link";
 import Search from "@/components/Search";
 import { capitalizeWord } from "@/utils/text-formatting";
 import Pagination from "@/components/Pagination";
+import { LuLoader2 } from "react-icons/lu";
 
 
 const Page = () => {
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState();
+
     const getEscorts = async () => {
         try {
             setLoading(true);
@@ -75,20 +77,31 @@ const Page = () => {
     }
 
     useEffect(()=> {
-        setTempData(data);
         if(search.length > 0) {
-            setTempData(
-                (temp_data)=> temp_data?.filter(
-                    escort => escort?.model_name?.toLowerCase().includes(search) || 
-                    escort?.country?.toLowerCase().includes(search) || 
-                    escort?.state?.toLowerCase().includes(search)
-                )
+            let new_data = data?.filter(
+                escort => escort?.model_name?.toLowerCase().includes(search.toLowerCase()) || 
+                escort?.country?.toLowerCase().includes(search.toLowerCase()) || 
+                escort?.state?.toLowerCase().includes(search.toLowerCase())
             );
+            setTempData(new_data);
         }
         else {
             setTempData(data);
         }
     },[search])
+
+    const [visible, setVisible] = useState(10);
+    const [fetching, setFetching] = useState(false);
+    const showMore = (total_item) => {
+        console.log("total items: ", total_item);
+        if(total_item > visible) {
+            setFetching(true)
+            setTimeout(() => {
+                setVisible(visible + 10);
+                setFetching(false)
+            }, 3000);
+        }
+    }
 
     return (
         <>
@@ -161,7 +174,7 @@ const Page = () => {
                 <div className="page-body px-6 pb-[80px]">
                     { loading ? (
                             <Loading />
-                        ) : data && (
+                        ) : tempData && (
                             <div className="overflow-hidden">
                                 <div className="table w-full relative overflow-auto">
                                     <table className="w-full relative shadow border border-grey">
@@ -180,7 +193,7 @@ const Page = () => {
                                         </thead>
 
                                         <tbody className="text-white">
-                                            { tempData?.slice(0,10)?.map(escort => (
+                                            { tempData?.slice(0, visible)?.map(escort => (
                                                 <tr key={escort?._id} className="py-2">
                                                     <td className="text-sm text-left py-2 px-2 font-[600] pl-[22px] pr-[6px]">
                                                         <div className="flex items-center gap-2">
@@ -210,20 +223,21 @@ const Page = () => {
                                         </tbody>
                                     </table>
                                 </div>
+
+                                { tempData?.length > visible && (
+                                    <div className="flex items-center justify-center">
+                                        <button 
+                                            className="bg-grey text-white w-[137px] mx-auto border border-lightblack mt-[40px] rounded-[4px] py-[8px] flex items-center justify-center gap-4" 
+                                            onClick={()=> showMore(tempData?.length)}
+                                        >
+                                            { fetching && <LuLoader2 className="animate-spin delay-150ms text-white text-[18px]" />}
+                                            <span> Load more </span>
+                                        </button>
+                                    </div>
+                                )}
                             </div> 
                         )
                     }
-
-                    <div className="">
-                        <Pagination 
-                            setPageIndex={setPage}
-                            currentPageIndex={page}
-                            totalPage={tempData?.length}
-                            pageItems={data}
-                            setCurrentPageItems={setTempData}
-                        />
-                    </div>
-
                 </div>
             </div>
         </>
