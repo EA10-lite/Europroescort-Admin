@@ -14,6 +14,8 @@ module.exports = {
       grey: "#151515",
       gray: "#0A0A0A",
       lightblack: "#252525",
+      error: '#FF218C',
+      success: '#4bb543',
     },
     screens: {
       'xsbelow': { max: '460px' },

@@ -5,8 +5,8 @@ import { getEscort } from "@/services/admin";
 import { useParams } from "next/navigation";
 
 import { LuLoader2 } from "react-icons/lu";
-import { HiDotsVertical } from "react-icons/hi";
 import { MdLocationOn } from "react-icons/md";
+import { FaUserCheck, FaUserPlus,FaUserXmark   } from "react-icons/fa6";
 import ProfileActionModal from "@/components/modals/ProfileActionModal";
 import SubscriptionModal from "@/components/modals/SubscriptionModal";
 
@@ -55,6 +55,7 @@ const Page = () => {
             if(resposne?.data?.success) {
                 toast.success("Escort Profile Rejected");
                 setOpenRejectModal(false);
+                window.location.reload();
             }
         } catch (error) {
             toast.error(error?.response?.data?.message || error?.message || "Failed to reject escort profile");
@@ -71,6 +72,7 @@ const Page = () => {
             if(resposne?.data?.success) {
                 toast.success("Escort Profile Approved");
                 setOpenApproveModal(false);
+                window.location.reload();
             }
         } catch (error) {
             toast.error(error?.response?.data?.message || error?.message || "Failed to approve escort profile");
@@ -129,12 +131,31 @@ const Page = () => {
 
                                     <p className="text-base mb-4 font-[500]"> 
                                         <b> status: </b> 
-                                        <span className={`${data?.details?.status} ml-2`}> { data?.details?.status } </span> 
+                                        <span className={`text-${data?.details?.status.toLowerCase() === "active" ? "success" : "error"} ml-2 px-[4px] capitalize`}> { data?.details?.status } </span> 
+                                    </p>
+                                    <p className="text-base mb-4 font-[500] flex items-center gap-4"> 
+                                        <b> Profile: </b> 
+                                        { !data?.details?.profile_submitted ? (
+                                            <div className="flex items-center gap-2 text-gray px-[8px] py-[3px]">
+                                                <span> Not submitted </span>
+                                                <FaUserPlus className="text-[18px]" />
+                                            </div>
+                                        ) : !data?.details?.profile_approved ? (
+                                            <div className="flex items-center gap-2 text-error px-[8px] py-[3px]">
+                                                <span> Rejected </span>
+                                                <FaUserXmark className="text-[18px]" />
+                                            </div>
+                                        ):(
+                                            <div className="flex items-center gap-2 text-success px-[8px] py-[3px]">
+                                                <span> Approved </span>
+                                                <FaUserCheck className="text-[18px]" />
+                                            </div>
+                                        )}
                                     </p>
 
                                     <p className="text-base mb-4 font-[500]"> 
                                         <b> verification: </b> 
-                                        <span className={` ml-2 ${ data?.details?.is_verified ? "active" : "suspended"}`}> 
+                                        <span className={` ml-2 px-[4px] ${ data?.details?.is_verified ? "text-success" : "text-error"}`}> 
                                             { data?.details?.is_verified ? "Verified" : "Not Verified "} 
                                         </span> 
                                     </p>
@@ -151,19 +172,23 @@ const Page = () => {
                                 </div>
 
                                 <div className="flex items-center gap-3 justify-start">
-                                    { !data?.details?.profile_approved && <button 
-                                        className="text-primary bg-grey w-[145px] py-[8px] rounded-[133.33px] text-base font-[600]"
-                                        onClick={()=> setOpenApproveModal(true)}
-                                    >
-                                        <span> Approve </span>
-                                    </button> }
+                                    { !data?.details?.profile_approved ? (
+                                        <button 
+                                            className="text-primary bg-grey w-[145px] py-[8px] rounded-[133.33px] text-base font-[600]"
+                                            onClick={()=> setOpenApproveModal(true)}
+                                        >
+                                            <span> Approve </span>
+                                        </button> 
+                                        
+                                    ): (
+                                        <button 
+                                            className="text-primary border border-lightblack shadow-md bg-grey w-[145px] py-[8px] rounded-[133.33px] text-base font-[600]"
+                                            onClick={()=> setOpenRejectModal(true)}
+                                        >
+                                            <span> Reject </span>
+                                        </button>
+                                    )}
                                     
-                                    <button 
-                                        className="text-primary border border-lightblack shadow-md bg-grey w-[145px] py-[8px] rounded-[133.33px] text-base font-[600]"
-                                        onClick={()=> setOpenRejectModal(true)}
-                                    >
-                                        <span> Reject </span>
-                                    </button>
                                 </div>
                             </div>
                         </div>

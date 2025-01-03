@@ -93,13 +93,12 @@ const Page = () => {
     const [visible, setVisible] = useState(10);
     const [fetching, setFetching] = useState(false);
     const showMore = (total_item) => {
-        console.log("total items: ", total_item);
         if(total_item > visible) {
             setFetching(true)
             setTimeout(() => {
                 setVisible(visible + 10);
                 setFetching(false)
-            }, 3000);
+            }, 1500);
         }
     }
 
@@ -210,7 +209,7 @@ const Page = () => {
                                                     <td className="text-sm text-center py-2 px-2 font-[600]"> { capitalizeWord(escort?.status) } </td>
                                                     <td className="text-sm text-left py-2 px-2 font-[600]"> { escort?.gender } </td>
                                                     <td className="text-sm text-left py-2 px-2 font-[600]"> { escort?.country} </td>
-                                                    <td className="text-sm text-left py-2 px-2 font-[600]" title={escort?.state}> { escort?.state.slice(0, 15) } </td>
+                                                    <td className="text-sm text-left py-2 px-2 font-[600]" title={escort?.state}> { escort?.state?.slice(0, 15) } </td>
                                                     <td className="text-sm text-left py-2 px-2 font-[600]"> { formatDate(escort?.createdAt) } </td>
                                                     <td className="text-sm text-right py-2 px-2 font-[600]">
                                                         <Link href={`/escorts/${escort?.model_name}/${escort?._id}`} className="flex items-center gap-2 text-white hover:text-primary">

@@ -40,6 +40,10 @@ export const approveEscortProfile = async (id) => {
     return api.post(`/admin/approveEscortProfile/${id}`);
 }
 
+export const rejectEscortProfile = async (id) => {
+    return api.post(`/admin/rejectEscortProfile/${id}`);
+}
+
 export const updateAdminProfile = async (data) => {
     return api.put(`/admin/updateAdmin`, data);
 }
