@@ -34,13 +34,10 @@ const UserContextProvider = ({ children }) => {
         try {
             const user = Cookies.get("europroadmin");
             if(user) {
+                setUser(JSON.parse(user));
                 const response = await getMyAccount();
                 if(response?.data?.success) {
                     setUser(response?.data?.result);
-                }
-                else {
-                    setUser();
-                    throw new Error(response?.data?.message);
                 }
             }
             else {

@@ -1,8 +1,10 @@
 "use client";
+import Loading from "@/components/Loading";
 import Search from "@/components/Search";
 import { getSubscribedEscorts, getSubscribedAgencies } from "@/services/admin";
 import { formatDate } from "@/utils/getDate";
 import { useEffect, useState } from "react";
+import { LuLoader2 } from "react-icons/lu";
 
 
 const Page = () => {
@@ -102,6 +104,18 @@ const Page = () => {
         }
     },[search, accountType])
 
+    const [visible, setVisible] = useState(10);
+    const [fetching, setFetching] = useState(false);
+    const showMore = (total_item) => {
+        if(total_item > visible) {
+            setFetching(true)
+            setTimeout(() => {
+                setVisible(visible + 10);
+                setFetching(false)
+            }, 1500);
+        }
+    }
+
 
     return (
         <div className="py-[40px] w-full h-full"> 
@@ -171,59 +185,75 @@ const Page = () => {
             </div>
 
             <div className="page-body px-6 pb-[80px]">
-                <div className="overflow-hidden">
-                    <div className="table w-full relative overflow-auto">
-                        <table className="w-full relative shadow border border-grey">
-                            <thead className="w-full">
-                                <tr className="w-full py-2 bg-gray text-primary sticky top-0 px-4">
-                                    <th className="text-sm text-left font-[600] py-[12px] pl-[22px] pr-[6px]"> { accountType === "Escorts" ? "Escort" : "Agencies" } </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Subscription Plan </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Duration </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Start Date </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> End Date </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Invoice </th>
-                                    <th className="text-sm text-center font-[600]"> </th>
-                                </tr>
-                            </thead>
-
-                            <tbody className="text-white">
-                                { tempData?.map(data => (
-                                    <tr key={data?._id} className="py-2">
-                                        { accountType === "Escorts" ? (
-                                            <td className="text-sm text-left py-2 px-2 font-[600] pl-[22px] pr-[6px]">
-                                                <div className="flex items-center gap-2">
-                                                    <img 
-                                                        src={data?.escortId?.profile_picture} 
-                                                        alt={data?.escortId?.model_name} 
-                                                        className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
-                                                    />
-                                                    <p className="text-sm text-left py-2 px-2 font-[600]"> { data?.escortId?.model_name } </p>
-                                                </div>
-                                            </td> 
-                                        ) : (
-                                            <td className="text-sm text-left py-2 px-2 font-[600] pl-[22px] pr-[6px]">
-                                                <div className="flex items-center gap-2">
-                                                    <img 
-                                                        src={data?.agencyId?.banner} 
-                                                        alt={data?.agencyId?.agency_name} 
-                                                        className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
-                                                    />
-                                                    <p className="text-sm text-left py-2 px-2 font-[600]"> { data?.agencyId?.agency_name } </p>
-                                                </div>
-                                            </td>
-                                        )}
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.type } </td>
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.duration } days </td>
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { formatDate(data?.startDate) } </td>
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { formatDate(data?.endDate) } </td>
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.payment_method} </td>
-                                        <td className="text-sm text-center py-2 px-2 font-[600]">  </td>
+                { loading ? (
+                    <Loading />
+                ) : tempData && (
+                    <div className="overflow-hidden">
+                        <div className="table w-full relative overflow-auto">
+                            <table className="w-full relative shadow border border-grey">
+                                <thead className="w-full">
+                                    <tr className="w-full py-2 bg-gray text-primary sticky top-0 px-4">
+                                        <th className="text-sm text-left font-[600] py-[12px] pl-[22px] pr-[6px]"> { accountType === "Escorts" ? "Escort" : "Agencies" } </th>
+                                        <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Subscription Plan </th>
+                                        <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Duration </th>
+                                        <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Start Date </th>
+                                        <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> End Date </th>
+                                        <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Invoice </th>
+                                        <th className="text-sm text-center font-[600]"> </th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+
+                                <tbody className="text-white">
+                                    { tempData?.slice(0, visible)?.map(data => (
+                                        <tr key={data?._id} className="py-2">
+                                            { accountType === "Escorts" ? (
+                                                <td className="text-sm text-left py-2 px-2 font-[600] pl-[22px] pr-[6px]">
+                                                    <div className="flex items-center gap-2">
+                                                        <img 
+                                                            src={data?.escortId?.profile_picture} 
+                                                            alt={data?.escortId?.model_name} 
+                                                            className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
+                                                        />
+                                                        <p className="text-sm text-left py-2 px-2 font-[600]"> { data?.escortId?.model_name } </p>
+                                                    </div>
+                                                </td> 
+                                            ) : (
+                                                <td className="text-sm text-left py-2 px-2 font-[600] pl-[22px] pr-[6px]">
+                                                    <div className="flex items-center gap-2">
+                                                        <img 
+                                                            src={data?.agencyId?.banner} 
+                                                            alt={data?.agencyId?.agency_name} 
+                                                            className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
+                                                        />
+                                                        <p className="text-sm text-left py-2 px-2 font-[600]"> { data?.agencyId?.agency_name } </p>
+                                                    </div>
+                                                </td>
+                                            )}
+                                            <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.type } </td>
+                                            <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.duration } days </td>
+                                            <td className="text-sm text-center py-2 px-2 font-[600]"> { formatDate(data?.startDate) } </td>
+                                            <td className="text-sm text-center py-2 px-2 font-[600]"> { formatDate(data?.endDate) } </td>
+                                            <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.payment_method} </td>
+                                            <td className="text-sm text-center py-2 px-2 font-[600]">  </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        { tempData?.length > visible && (
+                            <div className="flex items-center justify-center">
+                                <button 
+                                    className="bg-grey text-white w-[137px] mx-auto border border-lightblack mt-[40px] rounded-[4px] py-[8px] flex items-center justify-center gap-4" 
+                                    onClick={()=> showMore(tempData?.length)}
+                                >
+                                    { fetching && <LuLoader2 className="animate-spin delay-150ms text-white text-[18px]" />}
+                                    <span> Load more </span>
+                                </button>
+                            </div>
+                        )}
                     </div>
-                </div>
+                )}
             </div>
         </div>
     )
