@@ -47,6 +47,12 @@ const Sidebar = () => {
                         </Link>
                     </li>
 
+                    <li className={`px-4 py-2 transition-all delay-150ms ${ pathname.includes("/voucher") ? "text-primary" : "text-white hover:text-primary   hover:border-r-[2px] border-primary"}`}>
+                        <Link href="/banners" className="flex items-center gap-3 w-full font-[600]">
+                            <MdPayment className="text-[24px]" />
+                            <span className="text-[15px] leading-[22px]"> Voucher </span>
+                        </Link>
+                    </li>
                     <li className={`px-4 py-2 transition-all delay-150ms ${ pathname.includes("/banners") ? "text-primary" : "text-white hover:text-primary   hover:border-r-[2px] border-primary"}`}>
                         <Link href="/banners" className="flex items-center gap-3 w-full font-[600]">
                             <MdPayment className="text-[24px]" />

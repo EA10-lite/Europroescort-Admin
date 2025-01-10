@@ -83,9 +83,7 @@ const Page = () => {
             if(accountType === "Escorts") {
                 setTempData(
                     (temp_data)=> temp_data?.filter(
-                        escort => escort?.model_name?.toLowerCase().includes(search) || 
-                        escort?.country?.toLowerCase().includes(search) || 
-                        escort?.state?.toLowerCase().includes(search)
+                        item => item?.submitted_by?.model_name?.toLowerCase().includes(search)
                     )
                 );
             }
@@ -93,9 +91,7 @@ const Page = () => {
             else {
                 setTempData(
                     (temp_data)=> temp_data?.filter(
-                        agency => agency?.agency_name?.toLowerCase().includes(search) || 
-                        agency?.country?.toLowerCase().includes(search) || 
-                        agency?.state?.toLowerCase().includes(search)
+                        item => item?.submitted_by?.agency_name?.toLowerCase().includes(search)
                     )
                 );
             }
@@ -180,11 +176,9 @@ const Page = () => {
                             <thead className="w-full">
                                 <tr className="w-full py-2 bg-gray text-primary sticky top-0 px-4">
                                     <th className="text-sm text-left font-[600] py-[12px] pl-[22px] pr-[6px]"> { accountType === "Escorts" ? "Escort" : "Agencies" } </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Subscription Plan </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Duration </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Start Date </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> End Date </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Invoice </th>
+                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> ORDER ID </th>
+                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> CODE </th>
+                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Date </th>
                                     <th className="text-sm text-center font-[600]"> </th>
                                 </tr>
                             </thead>
@@ -196,30 +190,28 @@ const Page = () => {
                                             <td className="text-sm text-left py-2 px-2 font-[600] pl-[22px] pr-[6px]">
                                                 <div className="flex items-center gap-2">
                                                     <img 
-                                                        src={data?.escortId?.profile_picture} 
-                                                        alt={data?.escortId?.model_name} 
+                                                        src={data?.submitted_by?.profile_picture} 
+                                                        alt={data?.submitted_by?.model_name} 
                                                         className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
                                                     />
-                                                    <p className="text-sm text-left py-2 px-2 font-[600]"> { data?.escortId?.model_name } </p>
+                                                    <p className="text-sm text-left py-2 px-2 font-[600]"> { data?.submitted_by?.model_name } </p>
                                                 </div>
                                             </td> 
                                         ) : (
                                             <td className="text-sm text-left py-2 px-2 font-[600] pl-[22px] pr-[6px]">
                                                 <div className="flex items-center gap-2">
                                                     <img 
-                                                        src={data?.agencyId?.banner} 
-                                                        alt={data?.agencyId?.agency_name} 
+                                                        src={data?.submitted_by?.banner} 
+                                                        alt={data?.submitted_by?.agency_name} 
                                                         className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
                                                     />
-                                                    <p className="text-sm text-left py-2 px-2 font-[600]"> { data?.agencyId?.agency_name } </p>
+                                                    <p className="text-sm text-left py-2 px-2 font-[600]"> { data?.submitted_by?.agency_name } </p>
                                                 </div>
                                             </td>
                                         )}
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.type } </td>
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.duration } days </td>
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { formatDate(data?.startDate) } </td>
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { formatDate(data?.endDate) } </td>
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.payment_method} </td>
+                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.order_id } </td>
+                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.code } </td>
+                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { formatDate(data?.createdAt) } </td>
                                         <td className="text-sm text-center py-2 px-2 font-[600]">  </td>
                                     </tr>
                                 ))}
