@@ -1,6 +1,6 @@
 "use client";
 import Search from "@/components/Search";
-import { getSubscribedEscorts, getSubscribedAgencies } from "@/services/admin";
+import { getSubmittedVouchersByAgency, getSubmittedVouchersByEscort } from "@/services/admin";
 import { formatDate } from "@/utils/getDate";
 import { useEffect, useState } from "react";
 
@@ -13,10 +13,10 @@ const Page = () => {
     const [data, setData] = useState();
 
     const [loading, setLoading] = useState(false);
-    const getEscortsVoucher = async () => {
+    const getActiveEscortsSubscriptions = async () => {
         try {
             setLoading(true);
-            const response = await getSubscribedEscorts();
+            const response = await getSubmittedVouchersByEscort();
             if(response?.data?.success) {
                 setData(response?.data?.result);
             }
@@ -27,11 +27,10 @@ const Page = () => {
             setLoading(false);
         }
     }
-
-    const getAgenciesVoucher = async () => {
+    const getActiveAgenciesSubscriptions = async () => {
         try {
             setLoading(true);
-            const response = await getSubscribedAgencies();
+            const response = await getSubmittedVouchersByAgency();
             if(response?.data?.success) {
                 setData(response?.data?.result);
             }
@@ -45,11 +44,11 @@ const Page = () => {
 
     useEffect(()=> {
         if(accountType === "Escorts") {
-            getEscortsVoucher();
+            getActiveEscortsSubscriptions();
         }
 
         else {
-            getAgenciesVoucher();
+            getActiveAgenciesSubscriptions();
         }
     }, [accountType])
 
@@ -112,7 +111,7 @@ const Page = () => {
             <div className="page-header text-white px-6 mb-[20px]">
                 {/* Title */}
                 <div className="mb-[24px]">
-                    <h2 className="text-[22px] leading-[28px] font-[500] mb-[12px]"> Subscriptions </h2>
+                    <h2 className="text-[22px] leading-[28px] font-[500] mb-[12px]"> Voucher submitted </h2>
                     <p className="text-[16px] font-[500] leading-[22px]"> Welcome to the comprehensive escorts management section of our website. Here, you can browse through the full list of models who are currently subscribed with our platform, view their detailed profiles including bio, portfolio, and performance metrics, and utilize the administrative tools available to update their information, manage their visibility, and ensure their profiles are up-to-date and fully optimized for the best user experience. </p>
                 </div>
 
@@ -181,9 +180,11 @@ const Page = () => {
                             <thead className="w-full">
                                 <tr className="w-full py-2 bg-gray text-primary sticky top-0 px-4">
                                     <th className="text-sm text-left font-[600] py-[12px] pl-[22px] pr-[6px]"> { accountType === "Escorts" ? "Escort" : "Agencies" } </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> ORDER ID </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> CODE </th>
-                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Date </th>
+                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Subscription Plan </th>
+                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Duration </th>
+                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Start Date </th>
+                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> End Date </th>
+                                    <th className="text-sm text-center font-[600] py-[8px] px-[6px]"> Invoice </th>
                                     <th className="text-sm text-center font-[600]"> </th>
                                 </tr>
                             </thead>
@@ -195,28 +196,30 @@ const Page = () => {
                                             <td className="text-sm text-left py-2 px-2 font-[600] pl-[22px] pr-[6px]">
                                                 <div className="flex items-center gap-2">
                                                     <img 
-                                                        src={data?.submitted_by?.profile_picture} 
-                                                        alt={data?.submitted_by?.model_name} 
+                                                        src={data?.escortId?.profile_picture} 
+                                                        alt={data?.escortId?.model_name} 
                                                         className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
                                                     />
-                                                    <p className="text-sm text-left py-2 px-2 font-[600]"> { data?.submitted_by?.model_name } </p>
+                                                    <p className="text-sm text-left py-2 px-2 font-[600]"> { data?.escortId?.model_name } </p>
                                                 </div>
                                             </td> 
                                         ) : (
                                             <td className="text-sm text-left py-2 px-2 font-[600] pl-[22px] pr-[6px]">
                                                 <div className="flex items-center gap-2">
                                                     <img 
-                                                        src={data?.submitted_by?.banner} 
-                                                        alt={data?.submitted_by?.agency_name} 
+                                                        src={data?.agencyId?.banner} 
+                                                        alt={data?.agencyId?.agency_name} 
                                                         className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
                                                     />
-                                                    <p className="text-sm text-left py-2 px-2 font-[600]"> { data?.submitted_by?.agency_name } </p>
+                                                    <p className="text-sm text-left py-2 px-2 font-[600]"> { data?.agencyId?.agency_name } </p>
                                                 </div>
                                             </td>
                                         )}
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.order_id } </td>
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.code } </td>
-                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { formatDate(data?.createdAt) } </td>
+                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.type } </td>
+                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.duration } days </td>
+                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { formatDate(data?.startDate) } </td>
+                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { formatDate(data?.endDate) } </td>
+                                        <td className="text-sm text-center py-2 px-2 font-[600]"> { data?.payment_method} </td>
                                         <td className="text-sm text-center py-2 px-2 font-[600]">  </td>
                                     </tr>
                                 ))}

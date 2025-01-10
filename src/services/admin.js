@@ -68,6 +68,18 @@ export const getSubscribedEscorts = async () => {
     return api.get("/subscribe/getEscortSubscriptions");
 }
 
+export const getSubscribedAgencies = async () => {
+    return api.get("/subscribe/getAgencySubscriptions");
+}
+
+export const getSubmittedVouchersByEscort = async () => {
+    return api.get("/subscribe/getSubmittedVouchersByEscort");
+}
+
+export const getSubmittedVouchersByAgency = async () => {
+    return api.get("/subscribe/getSubmittedVouchersByAgency");
+}
+
 export const getVerifiedEscorts = async () => {
     return api.get("/verification/escortVerifications");
 }
