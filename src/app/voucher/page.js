@@ -140,31 +140,6 @@ const Page = () => {
                                 </li>
                             </ul>
                         </div>
-                        <div className="flex items-center">
-                            <ul className="flex items-center bg-gray border border-grey rounded-[6px] overflow-hidden">
-                                <li 
-                                    className={`px-[16px] py-[8px] text-[13px] font-[500] min-w-[88px] border-r border-grey text-center cursor-pointer  
-                                    ${ activeFilter === "All" ? "bg-primary text-black" : "text-primary"}`}
-                                    onClick={()=> setActiveFilter("All")}    
-                                >
-                                    <span> All </span>
-                                </li>
-                                <li 
-                                    className={`px-[16px] py-[8px] text-[13px] font-[500] min-w-[88px] border-r border-grey text-center cursor-pointer  
-                                    ${ activeFilter === "TOP" ? "bg-primary text-black" : "text-primary"}`}
-                                    onClick={()=> setActiveFilter("TOP")}    
-                                >
-                                    <span> TOP </span>
-                                </li>
-                                <li 
-                                    className={`px-[16px] py-[8px] text-[13px] font-[500] min-w-[88px] text-center cursor-pointer  
-                                    ${ activeFilter === "VIP" ? "bg-primary text-black" : "text-primary"}`}
-                                    onClick={()=> setActiveFilter("VIP")}    
-                                >
-                                    <span> VIP </span>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
