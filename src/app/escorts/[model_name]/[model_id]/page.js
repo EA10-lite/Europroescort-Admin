@@ -371,7 +371,7 @@ const Page = () => {
                                     <div className="flex gap-4 overflow-auto">
                                         { data?.media?.map((url, index)=> (
                                             <div className="border border-grey min-w-[" key={index}>
-                                                <img src={url?.url} alt={data?.details?.model_name} className="" />
+                                                <img src={url?.url} alt={data?.details?.model_name} className="h-[280px]" />
                                             </div>
                                         ))}
 
