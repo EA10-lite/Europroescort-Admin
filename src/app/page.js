@@ -1,12 +1,12 @@
 "use client";
 
+import Avatar from "@/components/Avatar";
 import Loading from "@/components/Loading";
 import { getDashboard } from "@/services/admin";
 import { formatDate } from "@/utils/getDate";
 import { useEffect, useState } from "react";
 import { FaUser, FaUsers } from "react-icons/fa";
 import { MdPayment } from "react-icons/md";
-import { TbGenderDemigirl } from "react-icons/tb";
 
 const Page = () => {
     const [loading, setLoading] = useState(false);
@@ -129,11 +129,15 @@ const Page = () => {
                                         <tr key={index}>
                                             <td className="text-sm text-left py-1 font-[600] pr-[6px]">
                                                 <div className="flex items-center gap-2">
-                                                    <img 
-                                                        src={escort?.profile_picture} 
-                                                        alt={escort?.model_name} 
-                                                        className="min-w-[36px] h-[36px] object-cover rounded-full" loading="lazy" 
-                                                    />
+                                                    { escort?.profile_picture ? (
+                                                        <img 
+                                                            src={escort?.profile_picture} 
+                                                            alt={escort?.model_name} 
+                                                            className="min-w-[36px] h-[36px] object-cover rounded-full" loading="lazy" 
+                                                        />
+                                                    ) : (
+                                                        <Avatar name={escort?.model_name} />
+                                                    )}
                                                     <p className="text-sm text-left py-2 px-2 font-[600]"> {escort?.model_name } </p>
                                                 </div>
                                             </td>

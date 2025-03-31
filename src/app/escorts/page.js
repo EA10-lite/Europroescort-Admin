@@ -12,6 +12,7 @@ import Search from "@/components/Search";
 import { capitalizeWord } from "@/utils/text-formatting";
 import Pagination from "@/components/Pagination";
 import { LuLoader2 } from "react-icons/lu";
+import Avatar from "@/components/Avatar";
 
 
 const Page = () => {
@@ -196,11 +197,19 @@ const Page = () => {
                                                 <tr key={escort?._id} className="py-2">
                                                     <td className="text-sm text-left py-2 px-2 font-[600] pl-[22px] pr-[6px]">
                                                         <div className="flex items-center gap-2">
-                                                            <img 
-                                                                src={escort?.profile_picture} 
-                                                                alt={escort?.model_name} 
-                                                                className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
-                                                            />
+                                                            { escort?.profile_picture ? (
+                                                                <img 
+                                                                    src={escort?.profile_picture} 
+                                                                    alt={escort?.model_name} 
+                                                                    className="w-[44px] h-[44px] object-cover rounded-full" loading="lazy" 
+                                                                /> 
+                                                            ) : (
+                                                                <Avatar 
+                                                                    name={escort?.model_name} 
+                                                                    width="44px" 
+                                                                    height="44px"
+                                                                />
+                                                            )}
                                                             <p className="text-sm text-left py-2 px-2 font-[600]"> { escort?.model_name } </p>
                                                         </div>
                                                     </td>

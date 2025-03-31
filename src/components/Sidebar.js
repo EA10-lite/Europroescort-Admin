@@ -4,8 +4,7 @@ import { usePathname } from "next/navigation";
 
 import { FaUsers } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
-import { MdPayment, MdWarningAmber, MdOutlineSettings, MdOutlineDashboardCustomize  } from "react-icons/md";
-import { TbGenderDemigirl } from "react-icons/tb";
+import { MdPayment, MdWarningAmber, MdOutlineSettings, MdOutlineDashboardCustomize, MdGirl } from "react-icons/md";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
 
@@ -28,7 +27,7 @@ const Sidebar = () => {
 
                     <li className={`px-4 py-2 transition-all delay-150ms ${ pathname.includes("/escorts") ? "text-primary" : "text-white hover:text-primary   hover:border-r-[2px] border-primary"}`}>
                         <Link href="/escorts" className="flex items-center gap-3 w-full font-[600]">
-                            <TbGenderDemigirl className="text-[24px]" />
+                            <MdGirl className="text-[24px]" />
                             <span className="text-[15px] leading-[22px]"> Escorts </span>
                         </Link>
                     </li>

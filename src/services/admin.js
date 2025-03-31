@@ -103,3 +103,11 @@ export const addBanner = async (data) => {
 export const deleteBanner = async (id) => {
     return api.delete("/banner/"+id);
 }
+
+
+export const sendEscortMessage = async (data) => {
+    return api.post("/message/escort", data);
+}
+export const sendAgencyMessage = async (data) => {
+    return api.post("/message/agency", data);
+}

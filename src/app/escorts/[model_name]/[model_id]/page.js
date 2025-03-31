@@ -1,18 +1,20 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { getEscort } from "@/services/admin";
+import { getEscort, sendEscortMessage } from "@/services/admin";
 import { useParams } from "next/navigation";
 
 import { LuLoader2 } from "react-icons/lu";
-import { MdLocationOn } from "react-icons/md";
+import { MdLocationOn, MdClose, MdCheck } from "react-icons/md";
 import { FaUserCheck, FaUserPlus,FaUserXmark   } from "react-icons/fa6";
+import { HiOutlineDotsVertical } from "react-icons/hi";
+import { BiMessageDetail } from "react-icons/bi";
+
 import ProfileActionModal from "@/components/modals/ProfileActionModal";
 import SubscriptionModal from "@/components/modals/SubscriptionModal";
+import MessageModal from "@/components/modals/MessageModal";
 
 import { approveEscortProfile, rejectEscortProfile } from "@/services/admin";
-
-
 
 const Page = () => {
     const [tab, setTab] = useState(1);
@@ -43,9 +45,11 @@ const Page = () => {
         }
     }, [model_id, model_name])
 
+    const [isOpen, setIsOpen] = useState(false);
     const [openRejectModal, setOpenRejectModal] = useState(false);
     const [openApproveModal, setOpenApproveModal] = useState(false);
     const [openSubscriptionModal, setOpenSubscriptionModal] = useState(false);
+    const [openMessageBox, setOpenMessageBox] = useState(false);
 
     const [rejecting, setRejecting] = useState(false);
     const handleRejection = async (values) => {
@@ -80,6 +84,27 @@ const Page = () => {
             setApproving(false);
         }
     }
+
+    const [messaging, setMessaging] = useState(false);
+    const handleSendMessage = async (values) => {
+        try {
+            setMessaging(true);
+            const response = await sendEscortMessage({
+                ...values,
+                name: model_name,
+                email: data?.details?.email
+            });
+
+            if(response?.data?.success) {
+                toast.success("Message sent successfully");
+                setOpenMessageBox(false);
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message || error?.message || "Failed to send message to escort");
+        } finally {
+            setMessaging(false);
+        }
+    }
     
 
     return (
@@ -101,6 +126,14 @@ const Page = () => {
                     handleAction={handleApproval}
                     loading={approving}
                     closeModal={()=> setOpenApproveModal(false)}
+                />
+            )}
+
+            { openMessageBox && (
+                <MessageModal 
+                    closeModal={()=> setOpenMessageBox(false)}
+                    handleAction={handleSendMessage}
+                    loading={messaging}
                 />
             )}
 
@@ -171,24 +204,50 @@ const Page = () => {
                                     <img src={data?.details?.profile_picture} alt={data?.details?.model_name} className="h-[280px] border border-lightblack mb-4" />
                                 </div>
 
-                                <div className="flex items-center gap-3 justify-start">
-                                    { !data?.details?.profile_approved ? (
-                                        <button 
-                                            className="text-primary bg-grey w-[145px] py-[8px] rounded-[133.33px] text-base font-[600]"
-                                            onClick={()=> setOpenApproveModal(true)}
-                                        >
-                                            <span> Approve </span>
-                                        </button> 
-                                        
-                                    ): (
-                                        <button 
-                                            className="text-primary border border-lightblack shadow-md bg-grey w-[145px] py-[8px] rounded-[133.33px] text-base font-[600]"
-                                            onClick={()=> setOpenRejectModal(true)}
-                                        >
-                                            <span> Reject </span>
-                                        </button>
+                                <div className="flex items-center gap-3 justify-start relative">
+                                    <div className="">
+                                        <div className="bg-grey rounded-[6px] p-[8px] cursor-pointer" onClick={()=> setIsOpen(!isOpen)}>
+                                            <HiOutlineDotsVertical size={18} color="white"  />
+                                        </div>
+                                    </div>
+
+                                    { isOpen && (
+                                        <div className="dropdown-content absolute top-[48px] w-[148px] right-[0]">
+                                            <ul className="flex flex-col gap-4 border border-lightblack rounded-[6px] p-[4px]">
+                                                { !data?.details?.profile_approved ? (
+                                                    <li className="w-full">
+                                                        <button 
+                                                            className="flex items-center gap-2 py-[12px] px-[12px] text-sm font-[600] text-white hover:bg-grey w-full rounded-[4px]"
+                                                            onClick={()=> setOpenApproveModal(true)}
+                                                        >
+                                                            <MdCheck size={18} />
+                                                            <span> Approve </span>
+                                                        </button> 
+                                                    </li>
+                                                    
+                                                ): (
+                                                    <li className="w-full">
+                                                        <button 
+                                                            className="flex items-center gap-2 py-[12px] px-[12px] text-sm font-[600] text-white hover:bg-grey w-full rounded-[4px]"
+                                                            onClick={()=> setOpenRejectModal(true)}
+                                                        >
+                                                            <MdClose size={18} />
+                                                            <span> Reject </span>
+                                                        </button>
+                                                    </li>
+                                                )}
+                                                <li className="w-full">
+                                                    <button 
+                                                        className="flex items-center gap-2 py-[12px] px-[12px] text-white hover:bg-grey text-sm font-[600] w-full rounded-[4px]"
+                                                        onClick={()=> setOpenMessageBox(true)}
+                                                    >
+                                                        <BiMessageDetail size={18} />
+                                                        <span> Message </span>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     )}
-                                    
                                 </div>
                             </div>
                         </div>
