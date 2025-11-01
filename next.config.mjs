@@ -8,7 +8,7 @@ const dev = {
 
 const prod = {
     ENV: "prod",
-    BASE_API: "https://mcescort.onrender.com/api",
+    BASE_API: "https://europroescort-server.vercel.app/api",
 }
   
   const nextConfig = {
